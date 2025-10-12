@@ -1,3 +1,6 @@
+// issues:
+// no fallback if user input exceeeded the array index or bounds (from Copilot)
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -21,16 +24,23 @@ int main(){
         
             cout <<  "\nAvailable Flavors:\n";
             for (int i=0; i < 4; i++){
-            cout << "[" << i + 1 << "]" << " " << flavors[i] << " "<< "₱" << flavorPrices[i] << endl;
+                cout << "[" << i + 1 << "]" << " " << flavors[i] << " "<< "₱" << flavorPrices[i] << endl;
         }
-            cout << "\nEnter flavor number:";
+            cout << "\nEnter flavor number: ";
             cin >> flavorChoice;
 
             cout << "\nAvailable Sizes:\n";
-            for(int i=0; i < 3; i++){
-            cout << "[" << i + 1 << "]" << " " << sizes[i] << endl;
+            for (int i=0; i < 3; i++){
+            cout << "[" << i + 1 << "]" << " " << sizes[i];
+                if (sizeExtraCst[i] == 0){
+                    cout << "(No Extra Charge)\n";
+                }
+                else{
+                    cout << "(₱" << sizeExtraCst[i] << ")\n";
+                }
             }
-            cout << "\nEnter Size:";
+
+            cout << "\nEnter Size: ";
             cin >> sizeNum;
 
             cout << "\nEnter Quantity: ";
@@ -46,7 +56,30 @@ int main(){
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
 
-            moreItems = false;
+            cout << "Add another item? [Y] Yes [N] No\n";
+            char answer;
+            cin >> answer;
+            
+            bool validAnswer = false;
+                while (!validAnswer)
+                switch(answer){
+                    case 'Y':
+                    case 'y':
+                        moreItems = true;
+                        validAnswer = true;
+                        break;
+
+                    case 'N':
+                    case 'n':
+                        moreItems = false; 
+                        validAnswer = true;
+                        break;
+
+                    default:
+                        cout << "Invalid input. Please type Y or N.\n";
+                        break;
+                }
+        
      }
 
 }
