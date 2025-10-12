@@ -1,5 +1,7 @@
 // issues:
-// no fallback if user input exceeeded the array index or bounds (from Copilot)
+// no fallback if user input exceeeded the array index or bounds (sentence from Copilot, lol) 
+// fallback is fixed with this if loop 
+// (ISSUE: int integer limit)
 
 #include <iostream>
 #include <string>
@@ -25,9 +27,15 @@ int main(){
             cout <<  "\nAvailable Flavors:\n";
             for (int i=0; i < 4; i++){
                 cout << "[" << i + 1 << "]" << " " << flavors[i] << " "<< "₱" << flavorPrices[i] << endl;
-        }
-            cout << "\nEnter flavor number: ";
+            }
+              
+            cout << "\nEnter flavor number: \n";
             cin >> flavorChoice;
+            if (flavorChoice < 1 || flavorChoice> 4) {
+                cout << "\nInvalid Flavor selection. Try again.\n";
+                continue;
+            
+            }
 
             cout << "\nAvailable Sizes:\n";
             for (int i=0; i < 3; i++){
@@ -42,6 +50,10 @@ int main(){
 
             cout << "\nEnter Size: ";
             cin >> sizeNum;
+            if (sizeNum < 1 || sizeNum> 3) {
+                cout << "\nInvalid size selection. Try again.\n";
+                continue;
+            }
 
             cout << "\nEnter Quantity: ";
             cin >> qty;
@@ -79,7 +91,8 @@ int main(){
                         cout << "Invalid input. Please type Y or N.\n";
                         break;
                 }
-        
-     }
+            cout << "Your grand total is: " << grandTotal;
+            
+    }
 
 }
