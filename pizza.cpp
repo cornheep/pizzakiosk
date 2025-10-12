@@ -29,14 +29,14 @@ int main(){
                 cout << "[" << i + 1 << "]" << " " << flavors[i] << " "<< "₱" << flavorPrices[i] << endl;
             }
               
-            cout << "\nEnter flavor number: \n";
+            cout << "\nEnter flavor number: ";
             cin >> flavorChoice;
-            if (flavorChoice < 1 || flavorChoice> 4) {
-                cout << "\nInvalid Flavor selection. Try again.\n";
-                continue;
-            
+            while (flavorChoice < 1 || flavorChoice > 4 ){
+                cout << "Invalid Flavor choice. Try again. \n";
+                cout << "\nEnter flavor number: ";
+                cin >> flavorChoice;
             }
-
+            
             cout << "\nAvailable Sizes:\n";
             for (int i=0; i < 3; i++){
             cout << "[" << i + 1 << "]" << " " << sizes[i];
@@ -50,13 +50,20 @@ int main(){
 
             cout << "\nEnter Size: ";
             cin >> sizeNum;
-            if (sizeNum < 1 || sizeNum> 3) {
-                cout << "\nInvalid size selection. Try again.\n";
-                continue;
+            while (sizeNum < 1 || sizeNum > 4 ){
+                cout << "Invalid Size choice. Try again. \n";
+                cout << "\nEnter Size: ";
+                cin >> sizeNum;
             }
 
             cout << "\nEnter Quantity: ";
             cin >> qty;
+                while(qty < 1){
+                    cout << "Quantity must be at least 1 or more. Try again. \n";
+                    cout << "\nEnter Quantity: ";
+                    cin >> qty;
+                }
+
 
             int basePrice = flavorPrices[flavorChoice - 1];
             int sizeExtra = sizeExtraCst[sizeNum -1];
@@ -68,7 +75,8 @@ int main(){
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
 
-            cout << "Add another item? [Y] Yes [N] No\n";
+            cout << "Add another item? \n";
+            cout << "[Y] Yes [N] No : ";
             char answer;
             cin >> answer;
             
@@ -91,7 +99,7 @@ int main(){
                         cout << "Invalid input. Please type Y or N.\n";
                         break;
                 }
-            cout << "Your grand total is: " << grandTotal;
+            cout << "Your grand total is: " << "₱"<< grandTotal;
             
     }
 
