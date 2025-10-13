@@ -1,11 +1,18 @@
-// issues:
-// no fallback if user input exceeeded the array index or bounds (sentence from Copilot, lol) 
 // fallback is fixed with this if loop 
 // (ISSUE: int integer limit)
+// still not fixed. since if user exceeds 64-bit int limit it crashes
+// try to read as sting instead of int
 
 #include <iostream>
 #include <string>
+#include <limits>
+
 using namespace std;
+
+void largeNumFallback(){
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
 
 int main(){
     
@@ -31,10 +38,12 @@ int main(){
               
             cout << "\nEnter flavor number: ";
             cin >> flavorChoice;
+            largeNumFallback;
             while (flavorChoice < 1 || flavorChoice > 4 ){
                 cout << "Invalid Flavor choice. Try again. \n";
                 cout << "\nEnter flavor number: ";
                 cin >> flavorChoice;
+                largeNumFallback;
             }
             
             cout << "\nAvailable Sizes:\n";
@@ -50,18 +59,22 @@ int main(){
 
             cout << "\nEnter Size: ";
             cin >> sizeNum;
+            largeNumFallback;
             while (sizeNum < 1 || sizeNum > 4 ){
                 cout << "Invalid Size choice. Try again. \n";
                 cout << "\nEnter Size: ";
                 cin >> sizeNum;
+                largeNumFallback;
             }
 
             cout << "\nEnter Quantity: ";
             cin >> qty;
+            largeNumFallback;
                 while(qty < 1){
                     cout << "Quantity must be at least 1 or more. Try again. \n";
                     cout << "\nEnter Quantity: ";
                     cin >> qty;
+                    largeNumFallback;
                 }
 
 
@@ -99,7 +112,12 @@ int main(){
                         cout << "Invalid input. Please type Y or N.\n";
                         break;
                 }
+            //to add:
+            //Formal reciept like a teller's reciept
+
+            cout << "\nReciept\n";
             cout << "Your grand total is: " << "₱"<< grandTotal;
+            cout << "\nThank you for purchasing!";
             
     }
 
