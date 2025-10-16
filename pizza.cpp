@@ -1,6 +1,9 @@
-// fallback is fixed with this if number exceeds min and max and non-numeric, 
-// cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes 
+//note: COMMENTS ARE NOT AI. I'm practicing proper commenting so it'll become my practice,
+//      but correct comments are helped by Copilot since I do not know some of the correct terminologies.
+
 // (ISSUE: int integer limit) FIXED 
+// fallback is fixed with this if number exceeds min and max and non-numeric, 
+// cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes
 // will try to translate this to <cstdio> printf
 
 #include <iostream>
@@ -9,7 +12,7 @@
 
 using namespace std;
 
-// Fallback if the user inputs number not in the choices
+// fallback if the user inputs number not in the choices
 int getSafeInt(string prompt, int min, int max){
     int val;
 
