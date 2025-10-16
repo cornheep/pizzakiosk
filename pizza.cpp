@@ -1,7 +1,7 @@
-// fallback is fixed with this if loop 
-// (ISSUE: int integer limit)
-// still not fixed. since if user exceeds 64-bit int limit it crashes
-// try to read as sting instead of int
+// fallback is fixed with this if number exceeds min and max and non-numeric, 
+// cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes 
+// (ISSUE: int integer limit) FIXED 
+// will try to translate this to <cstdio> printf
 
 #include <iostream>
 #include <string>
@@ -9,10 +9,52 @@
 
 using namespace std;
 
-void largeNumFallback(){
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-}
+// Fallback if the user inputs number not in the choices
+int getSafeInt(string prompt, int min, int max){
+    int val;
+
+    while(true){
+        cout << "\nPick a number between " << min << "-" << max << ": ";
+
+    if (cin >> val){
+            if (val >= min && val <= max){
+            return val; 
+            }
+            else {
+                cout << "Number is out of range. Please pick a number between " << min << " and " << max << ".\n";
+            }
+        }   
+        else {
+            cout << "Invalid Input. Only numbers are allowed.\n";
+            cin.clear();
+            while(cin.get() != '\n'){}
+        } 
+    }
+}    
+// fallback but for the size (custom prompt)
+int getSafeIntSize(string prompt, int min, int max){
+    int val;
+
+    while(true){
+        cout << "\nEnter quantity between " << min << "-" << max << ": ";
+
+    if (cin >> val){
+            if (val >= min && val <= max){
+            return val; 
+            }
+            else {
+                cout << "We can only accomodate up to " << max << " pizzas. Please pick a quantity up to" << max << ".\n";
+            }
+        }   
+        else {
+            cout << "Invalid Input. Only numbers are allowed.\n";
+            cin.clear();
+            while(cin.get() != '\n'){}
+        } 
+    }
+}    
+
+
 
 int main(){
     
@@ -26,25 +68,13 @@ int main(){
     bool moreItems = true;
 
         while(moreItems){
-
-        int flavorChoice;
-        int sizeNum;
-        int qty;
-        
+            
             cout <<  "\nAvailable Flavors:\n";
             for (int i=0; i < 4; i++){
                 cout << "[" << i + 1 << "]" << " " << flavors[i] << " "<< "₱" << flavorPrices[i] << endl;
             }
               
-            cout << "\nEnter flavor number: ";
-            cin >> flavorChoice;
-            largeNumFallback;
-            while (flavorChoice < 1 || flavorChoice > 4 ){
-                cout << "Invalid Flavor choice. Try again. \n";
-                cout << "\nEnter flavor number: ";
-                cin >> flavorChoice;
-                largeNumFallback;
-            }
+            int flavorChoice = getSafeInt("\nEnter flavor choice; ", 1, 4);
             
             cout << "\nAvailable Sizes:\n";
             for (int i=0; i < 3; i++){
@@ -56,27 +86,11 @@ int main(){
                     cout << "(₱" << sizeExtraCst[i] << ")\n";
                 }
             }
+            int sizeNum = getSafeInt ("Enter size: ",1, 3);
+            
 
-            cout << "\nEnter Size: ";
-            cin >> sizeNum;
-            largeNumFallback;
-            while (sizeNum < 1 || sizeNum > 4 ){
-                cout << "Invalid Size choice. Try again. \n";
-                cout << "\nEnter Size: ";
-                cin >> sizeNum;
-                largeNumFallback;
-            }
-
-            cout << "\nEnter Quantity: ";
-            cin >> qty;
-            largeNumFallback;
-                while(qty < 1){
-                    cout << "Quantity must be at least 1 or more. Try again. \n";
-                    cout << "\nEnter Quantity: ";
-                    cin >> qty;
-                    largeNumFallback;
-                }
-
+            int qty = getSafeIntSize ("Enter quantity", 1, 50);
+                
 
             int basePrice = flavorPrices[flavorChoice - 1];
             int sizeExtra = sizeExtraCst[sizeNum -1];
