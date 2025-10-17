@@ -4,7 +4,6 @@
 // (ISSUE: int integer limit) FIXED 
 // fallback is fixed with this if number exceeds min and max and non-numeric, 
 // cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes
-// will try to translate this to <cstdio> printf
 
 #include <iostream>
 #include <string>
@@ -98,7 +97,7 @@ int main(){
 
             grandTotal += totalPrice;
 
-            cout << "Your Order:\n";
+            cout << "\nYour Order:\n";
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
 
@@ -114,12 +113,14 @@ int main(){
                     case 'y':
                         moreItems = true;
                         validAnswer = true;
+                        cout << "\n";
                         break;
 
                     case 'N':
                     case 'n':
                         moreItems = false; 
                         validAnswer = true;
+                        cout << "\n";
                         break;
 
                     default:
@@ -130,8 +131,7 @@ int main(){
             //to add:
             //payment and change
             //Formal reciept like a teller's reciept
-
-
+            cout << string(75, '*') << endl;
             cout << "\nReciept\n";
             cout << "Your grand total is: " << "₱"<< grandTotal;
             cout << "\nThank you for purchasing!";
