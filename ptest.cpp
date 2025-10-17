@@ -79,13 +79,13 @@ int saveOrderCount(int count) {
 }
 
 //  time when reciept is printed
+//  will change to 12-hour format
     void receiptTime(){
         time_t currentTime;
         time(&currentTime);
 
         cout << "Business date: " << ctime(&currentTime) << endl;
     }
-
 
 int main(){ 
     
@@ -168,7 +168,7 @@ int main(){
             orderCount++; // new order placed, or order finished, must be placed here since if user
                           // canceled the order, then count is not increased
             cout << "Order Number: #" << orderCount << endl;
-            receiptTime();
+            receiptTime(); //reciept output time and date, will translate to 12-hour
             cout << "Your grand total is: " << "₱"<< grandTotal;
             cout << "\nThank you for purchasing!";
             
