@@ -1,15 +1,18 @@
-// fallback is fixed with this if number exceeds min and max. 
-// cin.clear and '\n' are used 
+//note: COMMENTS ARE NOT AI. I'm practicing proper commenting so it'll become my practice,
+//      but correct comments are helped by Copilot since I do not know some of the correct terminologies.
+
 // (ISSUE: int integer limit) FIXED 
-// will try to translate this to <cstdio> printf
+// fallback is fixed with this if number exceeds min and max and non-numeric, 
+// cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes
 
 #include <iostream>
 #include <string>
-#include <limits>
+#include <ctime>
+#include <fstream>
 
 using namespace std;
 
-// Fallback if the user inputs number not in the choices
+// fallback if the user inputs number not in the choices
 int getSafeInt(string prompt, int min, int max){
     int val;
 
@@ -52,11 +55,39 @@ int getSafeIntSize(string prompt, int min, int max){
             while(cin.get() != '\n'){}
         } 
     }
-}    
+} 
+
+int openOrderCount(){
+    ifstream in("orderCount.txt");
+    int orderCount = 0;
+
+    if (in >> orderCount){
+        return orderCount;    
+    }
+    else {
+        ofstream out("orderCount.txt");
+        out << 0;
+        out.close();
+        return orderCount; 
+    }
+}
+
+int saveOrderCount(int count) {
+    ofstream out("orderCount.txt");
+    out << count;
+    return count;
+}
+
+//  time when reciept is printed
+    void receiptTime(){
+        time_t currentTime;
+        time(&currentTime);
+
+        cout << "Business date: " << ctime(&currentTime) << endl;
+    }
 
 
-
-int main(){
+int main(){ 
     
     string flavors[] ={"Pepperoni", "Hawaiian", "All Meat", "Vegetarian"};
     int flavorPrices[] = {250, 270, 300, 230};
@@ -67,6 +98,8 @@ int main(){
     int grandTotal = 0;
     bool moreItems = true;
 
+    int orderCount = openOrderCount();
+    
         while(moreItems){
             
             cout <<  "\nAvailable Flavors:\n";
@@ -88,17 +121,15 @@ int main(){
             }
             int sizeNum = getSafeInt ("Enter size: ",1, 3);
             
-
             int qty = getSafeIntSize ("Enter quantity", 1, 50);
                 
-
             int basePrice = flavorPrices[flavorChoice - 1];
             int sizeExtra = sizeExtraCst[sizeNum -1];
             int totalPrice = (basePrice + sizeExtra)* qty;
 
             grandTotal += totalPrice;
 
-            cout << "Your Order:\n";
+            cout << "\nYour Order:\n";
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
 
@@ -114,26 +145,33 @@ int main(){
                     case 'y':
                         moreItems = true;
                         validAnswer = true;
+                        cout << "\n";
                         break;
 
                     case 'N':
                     case 'n':
                         moreItems = false; 
                         validAnswer = true;
+                        cout << "\n";
                         break;
 
                     default:
                         cout << "Invalid input. Please type Y or N.\n";
                         break;
                 }
+    
             //to add:
+            //payment and change
             //Formal reciept like a teller's reciept
-
+            cout << string(75, '*') << endl;
             cout << "\nReciept\n";
+            orderCount++; // new order placed, or order finished, must be placed here since if user
+                          // canceled the order, then count is not increased
+            cout << "Order Number: #" << orderCount << endl;
+            receiptTime();
             cout << "Your grand total is: " << "₱"<< grandTotal;
             cout << "\nThank you for purchasing!";
-
             
     }
 
-}//test comment
+}
