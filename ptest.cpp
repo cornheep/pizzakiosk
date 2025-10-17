@@ -133,13 +133,14 @@ int main(){
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
 
-            cout << "Add another item? \n";
-            cout << "[Y] Yes [N] No : ";
             char answer;
-            cin >> answer;
-            
             bool validAnswer = false;
-                while (!validAnswer)
+
+                while (!validAnswer){
+                cout << "Add another item? \n";
+                cout << "[Y] Yes [N] No : ";
+                cin >> answer;
+
                 switch(answer){
                     case 'Y':
                     case 'y':
@@ -156,19 +157,28 @@ int main(){
                         break;
 
                     default:
-                        cout << "Invalid input. Please type Y or N.\n";
+                        cout << "Invalid input. Please type Y or N.\n\n";
+                        cin.clear();
+                        while (cin.get() != '\n') {}
                         break;
+                         
+                }
                 }
     
             //to add:
             //payment and change
-            //Formal reciept like a teller's reciept
+            //Formal reciept like a teller's reciept(NOT FINISHED)
+
             cout << string(75, '*') << endl;
             cout << "\nReciept\n";
-            orderCount++; // new order placed, or order finished, must be placed here since if user
-                          // canceled the order, then count is not increased
+            orderCount++; // new order placed, increment by 1
+
+            saveOrderCount(orderCount); 
+
             cout << "Order Number: #" << orderCount << endl;
+
             receiptTime(); //reciept output time and date, will translate to 12-hour
+
             cout << "Your grand total is: " << "₱"<< grandTotal;
             cout << "\nThank you for purchasing!";
             
