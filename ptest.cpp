@@ -132,6 +132,7 @@ int main(){
             cout << "\nReciept\n";
             cout << "Your grand total is: " << "₱"<< grandTotal;
             cout << "\nThank you for purchasing!";
+
             
     }
 
