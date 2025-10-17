@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <string>
-#include <limits>
 
 using namespace std;
 
@@ -91,10 +90,8 @@ int main(){
             }
             int sizeNum = getSafeInt ("Enter size: ",1, 3);
             
-
             int qty = getSafeIntSize ("Enter quantity", 1, 50);
                 
-
             int basePrice = flavorPrices[flavorChoice - 1];
             int sizeExtra = sizeExtraCst[sizeNum -1];
             int totalPrice = (basePrice + sizeExtra)* qty;
@@ -129,8 +126,11 @@ int main(){
                         cout << "Invalid input. Please type Y or N.\n";
                         break;
                 }
+    
             //to add:
+            //payment and change
             //Formal reciept like a teller's reciept
+
 
             cout << "\nReciept\n";
             cout << "Your grand total is: " << "₱"<< grandTotal;
