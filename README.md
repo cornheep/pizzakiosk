@@ -1,25 +1,26 @@
 # PizzaKiosk
 
 
-Experimenting with making a kiosk of pizza ordering. Also serves as my learning of C++ since I think I'm a project-based learner lol.
+Experimenting with making a kiosk of pizza ordering system. Also serves as my learning of C++ since I think I'm a project-based learner lol.
 
 
-### To compile the code, heres the command
+### To compile the code:
 
 ```bash
-g++ -o 'replace filename with what you want' ptest.cpp
-g++ -o 'replace filename with what you want' pizza.cpp
+g++ -o 'custom filename' ptest.cpp
+g++ -o 'custom filename' pizza.cpp
 ```
 
-### To run the code
+### To run the compiled program:
 
 ```bash
 ./filename
 ```
-### To be added
+### To be integrated:
 
-- Delete item
-- Delete previous output of terminal
+- Delete items
+- Delete previous output of terminal (CLI)
+- GUI (probably will take a month)
 
 
 
