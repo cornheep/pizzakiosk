@@ -16,6 +16,10 @@ g++ -o 'replace filename with what you want' pizza.cpp
 ```bash
 ./filename
 ```
+### To be added
+
+- Delete item
+- Delete previous output of terminal
 
 
 
