@@ -1,16 +1,14 @@
 //note: COMMENTS ARE NOT AI. I'm practicing proper commenting so it'll become my practice,
 //      but correct comments are helped by Copilot since I do not know some of the correct terminologies.
 
-// (ISSUE: int integer limit) FIXED 
-// fallback is fixed with this if number exceeds min and max and non-numeric, 
-// cin.clear resets bad input, and cin.get flushes chaarter until '\n' to prevent crashes
-
 #include <iostream>
 #include <string>
-#include <ctime>
+#include <chrono>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
+using namespace chrono;
 
 // fallback if the user inputs number not in the choices
 int getSafeInt(string prompt, int min, int max){
@@ -34,7 +32,7 @@ int getSafeInt(string prompt, int min, int max){
         } 
     }
 }    
-// fallback but for the size (custom prompt)
+// fallback but for the size
 int getSafeIntSize(string prompt, int min, int max){
     int val;
 
@@ -57,7 +55,8 @@ int getSafeIntSize(string prompt, int min, int max){
     }
 } 
 
-int openOrderCount(){
+//open orderCount file
+int openOrderCount(){ 
     ifstream in("orderCount.txt");
     int orderCount = 0;
 
@@ -72,6 +71,7 @@ int openOrderCount(){
     }
 }
 
+// save current order number 
 int saveOrderCount(int count) {
     ofstream out("orderCount.txt");
     out << count;
@@ -79,13 +79,72 @@ int saveOrderCount(int count) {
 }
 
 //  time when reciept is printed
-//  will change to 12-hour format
-    void receiptTime(){
-        time_t currentTime;
-        time(&currentTime);
+void receiptTimeandDate(){
+        auto now = system_clock::now();
+        time_t currentTime = system_clock::to_time_t(now); 
+        tm* local = localtime(&currentTime);               
 
-        cout << "Business date: " << ctime(&currentTime) << endl;
+        char formattedDate[30];
+        char formmattedTime [30];
+
+        strftime(formattedDate, sizeof(formattedDate), "%a %b %d, %Y", local);
+        strftime(formmattedTime , sizeof(formmattedTime), "%I:%M:%S %p", local); 
+
+        cout << "\nBusiness Date: " << formattedDate << "\n";
+        cout << "Time: " << formmattedTime << "\n" ;
+       }
+
+// modularized the addmoreitem
+bool addItem(){
+    char answer;
+    bool validAnswer = false;
+
+    while (!validAnswer) {
+        cout << "Add another item? \n";
+        cout << "[Y] Yes [N] No : ";
+        cin >> answer;
+
+        switch (answer) {
+            case 'Y':
+            case 'y':
+                cout << "\n";
+                return true;
+
+            case 'N':
+            case 'n':
+                cout << "\n";
+                return false;
+
+            default:
+                cout << "Invalid input. Please type Y or N.\n\n";
+                cin.clear();
+                while (cin.get() != '\n') {}
+                break;
+        }
     }
+    return false;
+}
+// modular prit reciept
+void printReceipt(int& orderCount, int qty, int sizeNum, int flavorChoice, int totalPrice, int grandTotal, int payment, int change,
+    string sizes[], string flavors[], string& itemSummary) { 
+    orderCount++; // new order placed
+    saveOrderCount(orderCount);
+
+    cout << "\n[==================== RECEIPT ====================]\n";
+    cout << "Order Number: #" << orderCount;
+
+    receiptTimeandDate(); // prints Business Date and Time
+
+    cout << "\nItem Summary:\n";
+    //lists total items bought
+    cout << itemSummary << "\n";
+
+    cout << "Grand Total: ₱" << grandTotal << "\n";
+    cout << "Payment: ₱" << payment << "\n";
+    cout << "Change: ₱" << change << "\n";
+    cout << "Thank you for purchasing!\n";
+    cout << "[=================================================]\n";
+}
 
 int main(){ 
     
@@ -98,6 +157,7 @@ int main(){
     int grandTotal = 0;
     bool moreItems = true;
 
+    string itemSummary = "";    
     int orderCount = openOrderCount();
     
         while(moreItems){
@@ -129,59 +189,43 @@ int main(){
 
             grandTotal += totalPrice;
 
+            itemSummary += "   " + to_string(qty) + "pcs " + sizes[sizeNum - 1] + " " +
+                   flavors[flavorChoice - 1] + " - ₱" + to_string(totalPrice) + "\n";
+
             cout << "\nYour Order:\n";
             cout << qty << "pcs " << sizes[sizeNum-1] << " " << flavors[flavorChoice -1] << endl;
             cout << "Subtotal: ₱" << totalPrice << endl;
+            cout << "Current Total: ₱" << grandTotal << "\n\n"; 
 
-            char answer;
-            bool validAnswer = false;
-
-                while (!validAnswer){
-                cout << "Add another item? \n";
-                cout << "[Y] Yes [N] No : ";
-                cin >> answer;
-
-                switch(answer){
-                    case 'Y':
-                    case 'y':
-                        moreItems = true;
-                        validAnswer = true;
-                        cout << "\n";
-                        break;
-
-                    case 'N':
-                    case 'n':
-                        moreItems = false; 
-                        validAnswer = true;
-                        cout << "\n";
-                        break;
-
-                    default:
-                        cout << "Invalid input. Please type Y or N.\n\n";
-                        cin.clear();
-                        while (cin.get() != '\n') {}
-                        break;
-                         
-                }
-                }
-    
-            //to add:
-            //payment and change
-            //Formal reciept like a teller's reciept(NOT FINISHED)
-
-            cout << string(75, '*') << endl;
-            cout << "\nReciept\n";
-            orderCount++; // new order placed, increment by 1
-
-            saveOrderCount(orderCount); 
-
-            cout << "Order Number: #" << orderCount << endl;
-
-            receiptTime(); //reciept output time and date, will translate to 12-hour
-
-            cout << "Your grand total is: " << "₱"<< grandTotal;
-            cout << "\nThank you for purchasing!";
+            moreItems = addItem(); // it returns value to moreItems
             
-    }
+            // payment section
+            if (!moreItems){
+            bool paymentPrompt = false;
+            int payment;
+            int change;
+            while(!paymentPrompt){ 
+            cout << "Payment: ";
+            cin >> payment;
+            
+            if (payment > grandTotal){
+                change = payment - grandTotal;
+                paymentPrompt = true;
+            }
+            else if (payment == grandTotal){
+                change = 0;
+                paymentPrompt = true;
+            }
+            
+            else if (payment < grandTotal){
+                change = payment - grandTotal;
+                cout << "Insuficient Payment. Please add " << change << "\n";
+                paymentPrompt = false;
+            }
+            }
+            //calls  the printreciept after all is done
+            printReceipt(orderCount, qty, sizeNum, flavorChoice, totalPrice, grandTotal, payment, change, sizes, flavors, itemSummary);
+            }
 
+        }  
 }
