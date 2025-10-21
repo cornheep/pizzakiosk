@@ -12,22 +12,22 @@ A pizza ordering kiosk system built as a hands-on project for learning C++. This
 For g++:
 
 ```bash
-g++ -o <program_name> ptest.cpp
-g++ -o <program_name> pizza.cpp
+g++ -o program_name ptest.cpp
+g++ -o program_name pizza.cpp
 ```
 
 For clang:
 
 ```bash
-clang++ -o <program_name> ptest.cpp
-clang++ -o <program_name> pizza.cpp
+clang++ -o program_name ptest.cpp
+clang++ -o program_name pizza.cpp
 ```
 
 ### Running the Program
 
 Execute the compiled program:
 ```bash
-./<program_name>
+./program_name
 ```
 
 ## Planned Features
@@ -49,6 +49,7 @@ Execute the compiled program:
 
 ## Development Status
 
-Currently in early development - CLI version is the primary focus, with GUI implementation planned for future releases.
+- Currently in early development 
+- Working with the CLI version and planning to implement GUI soon.
 
 ---
