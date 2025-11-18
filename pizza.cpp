@@ -11,6 +11,7 @@
 using namespace std;
 
 // fallback if the user inputs number not in the choices
+
 int getSafeInt(string prompt, int min, int max){
     int val;
 
