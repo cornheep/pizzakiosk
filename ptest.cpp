@@ -7,6 +7,7 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 using namespace chrono;
@@ -19,6 +20,14 @@ struct OrderItem {
     int totalPrice;
     string itemDescription;
 };
+// on top for function purposes
+void clearScreen(){
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+}
 
 // fallback if the user inputs number not in the choices
 int getSafeInt(string prompt, int min, int max){
@@ -99,6 +108,7 @@ void receiptTimeandDate(){
 
 // display current cart items
 void displayCart(const vector<OrderItem>& cart, int grandTotal) {
+    clearScreen();
     if (cart.empty()) {
         cout << "\nYour cart is empty.\n";
         return;
@@ -121,6 +131,7 @@ bool removeItem(vector<OrderItem>& cart, int& grandTotal) {
     }
     
     displayCart(cart, grandTotal);
+    
     
     int choice = getSafeInt("\nEnter item number to remove (0 to cancel)", 0, cart.size());
     
@@ -162,6 +173,7 @@ void printReceipt(int& orderCount, int grandTotal, int payment, int change,
     const vector<OrderItem>& cart) { 
     orderCount++; // new order placed
     saveOrderCount(orderCount);
+    clearScreen();
     cout << "\n[==================== RECEIPT ====================]\n";
     cout << "Order Number: #" << orderCount;
     receiptTimeandDate(); // prints Business Date and Time
@@ -178,6 +190,7 @@ void printReceipt(int& orderCount, int grandTotal, int payment, int change,
     cout << "Thank you for purchasing!\n";
     cout << "[=================================================]\n";
 }
+
 
 int main(){ 
     string flavors[] ={"Pepperoni", "Hawaiian", "All Meat", "Vegetarian", "Cheese"};
@@ -197,6 +210,7 @@ int main(){
         
         // skip if first item
         if (firstItem) {
+            clearScreen();
             action = 'A';
             firstItem = false;
         } else {
@@ -204,6 +218,7 @@ int main(){
         }
         
         if (action == 'A') {
+            clearScreen();
             // add item logic
             cout <<  "\nAvailable Flavors:\n";
             for (int i=0; i < 5; i++){
@@ -231,8 +246,9 @@ int main(){
             int totalPrice = (basePrice + sizeExtra) * qty;
             grandTotal += totalPrice;
             
-            // create order item
             OrderItem newItem;
+
+            // create order item
             newItem.qty = qty;
             newItem.sizeNum = sizeNum;
             newItem.flavorChoice = flavorChoice;
@@ -246,12 +262,14 @@ int main(){
             displayCart(cart, grandTotal);
         }
         else if (action == 'R') {
+            clearScreen();
             removeItem(cart, grandTotal);
             if (!cart.empty()) {
                 displayCart(cart, grandTotal);
             }
         }
         else if (action == 'C'){
+            clearScreen();
             if (cart.empty()) {
                 cout << "\nYour cart is empty! Please add items first.\n";
                 continue;
